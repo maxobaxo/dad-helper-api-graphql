@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const { graphqlExpress, graphiqlExpress } = require("apollo-server-express");
 const { makeExecutableSchema } = require("graphql-tools");
 const { find, filter } = require("lodash");
+var cors = require("cors");
 
 // some fake data
 const games = [
@@ -125,6 +126,8 @@ const schema = makeExecutableSchema({
 });
 
 const app = express();
+
+app.use(cors());
 
 // the graphql endpoint
 app.use("/graphql", bodyParser.json(), graphqlExpress({ schema }));
