@@ -12,14 +12,16 @@ const games = [
     description:
       "During tummy-time, prop up a mirror in front of your baby so they'll see themselves when they look up and forwards.  This can be an engaging and mentally stimulating activity for your little one.",
     bonus:
-      "Sit behind your baby so that you appear in the reflection. Then try popping in and out of frame. This version of peek-a-boo is very popular with babies around your child's age."
+      "Sit behind your baby so that you appear in the reflection. Then try popping in and out of frame. This version of peek-a-boo is very popular with babies around your child's age.",
+    skillId: "59d29d1a734d1d42e49ed324"
   },
   {
     name: "Pull to a Sit",
     description:
       "With your baby lying on her back over your lap (facing you), let her grasp your fingers.  Supporting her so she doesn't fall down, gradually pull your baby up into a seated position.  Once she's seated, congratulate her! You made it!",
     bonus:
-      "If you'd like, you can start bouncing your baby up and down (like riding a horse), once their in a seated position.  This movement will signal that they've accomplished the previous task and engage them in a new way."
+      "If you'd like, you can start bouncing your baby up and down (like riding a horse), once their in a seated position.  This movement will signal that they've accomplished the previous task and engage them in a new way.",
+    skillId: "59d2cb8e734d1d42e49eebdc"
   }
 ];
 
@@ -92,13 +94,14 @@ const typeDefs = `
   type Skill { 
     id: String, 
     name: String,
-    age: Age
+    ageId: Int
   }
 
   type Game { 
     name: String,
     description: String, 
-    bonus: String
+    bonus: String,
+    skillId: String
   }
 
   type Query { 
@@ -106,6 +109,7 @@ const typeDefs = `
     ages: [Age],
     age(range: String!): [Skill],
     skills(ageId: Int!): [Skill],
+    game(skillId: String!): Game
   }
 `;
 
@@ -115,7 +119,8 @@ const resolvers = {
     games: () => games,
     ages: () => ages,
     age: (_, { id }) => find(skills, { ageId: range }),
-    skills: (_, { ageId }) => filter(skills, { ageId: ageId })
+    skills: (_, { ageId }) => filter(skills, { ageId: ageId }),
+    game: (_, { skillId }) => find(games, { skillId: skillId })
   }
 };
 
